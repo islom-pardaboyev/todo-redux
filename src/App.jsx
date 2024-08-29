@@ -6,7 +6,9 @@ import { ACTIONS } from "./redux/actions";
 import toast from "react-hot-toast";
 
 function App() {
-  const filteredTodos = useSelector((state) => state.todos);
+  const filteredTodos = useSelector((state) => state.filteredTodos);
+  const todos = useSelector((state) => state.todos);
+  
   const [value, setValue] = useState("");
   const dispatch = useDispatch();
   console.log(filteredTodos);
@@ -60,15 +62,15 @@ function App() {
           </div>
         </form>
         <div className="flex items-center py-5 justify-between">
-          <Button size="large" type="primary">
-            All ({filteredTodos.length})
+          <Button size="large" type="primary" onClick={() => dispatch({type: ACTIONS.SHOW_ALL_TODOS})}>
+            All ({todos.length})
           </Button>
-          <Button size="large" type="primary">
-            Completed ({filteredTodos.filter((item) => item.completed).length})
+          <Button size="large" type="primary" onClick={() => dispatch({type:ACTIONS.SHOW_COMPLETED_TODOS})}>
+            Completed ({todos.filter((item) => item.completed).length})
           </Button>
-          <Button size="large" type="primary">
+          <Button size="large" type="primary" onClick={() => dispatch({type: ACTIONS.SHOW_UNCOMPLETED_TODOS})}>
             Uncompleted (
-            {filteredTodos.filter((item) => !item.completed).length})
+            {todos.filter((item) => !item.completed).length})
           </Button>
         </div>
         <ul className="h-[300px] overflow-y-auto flex flex-col gap-2">
@@ -84,7 +86,7 @@ function App() {
                 </div>
                 <div className={`flex items-center gap-3`}>
                   <Checkbox className="scale-125" checked={item.completed} onChange={() => dispatch({type:ACTIONS.MAKE_COMPLETED_TODO, payload:item.id})}/>
-                  <Button className="!bg-rose-500 !border-transparent text-white hover:!text-white" size="large">Delete</Button>
+                  <Button onClick={() => dispatch({type:ACTIONS.DELETE_TODO, payload:item.id})} className="!bg-rose-500 !border-transparent text-white hover:!text-white" size="large">Delete</Button>
                   <Button className="!bg-green-500 !border-transparent text-white hover:!text-white" size="large">Update</Button>
                 </div>
               </li>

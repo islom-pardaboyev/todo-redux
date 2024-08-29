@@ -24,11 +24,34 @@ export const reducer = (state = initialState, action) => {
         return state;
       }
     case ACTIONS.MAKE_COMPLETED_TODO:
-      const clickedTodo = state.filteredTodos.find(item => item.id == action.payload)
-      clickedTodo.completed = !clickedTodo.completed
+      const clickedTodo = state.filteredTodos.find(
+        (item) => item.id == action.payload
+      );
+      clickedTodo.completed = !clickedTodo.completed;
       console.log(clickedTodo);
-      
-      return state
+
+      return state;
+    case ACTIONS.SHOW_COMPLETED_TODOS:
+      return {
+        ...state,
+        filteredTodos: state.todos.filter((item) => item.completed),
+      };
+    case ACTIONS.SHOW_UNCOMPLETED_TODOS:
+      return {
+        ...state,
+        filteredTodos: state.todos.filter((item) => !item.completed),
+      };
+    case ACTIONS.SHOW_ALL_TODOS:
+      return {
+        ...state,
+        filteredTodos: state.todos,
+      };
+    case ACTIONS.DELETE_TODO:
+      return {
+        ...state,
+        filteredTodos: state.todos.filter(item => item.id !== action.payload),
+        todos: state.todos.filter(item => item.id !== action.payload)
+      }
     default:
       return state;
   }
